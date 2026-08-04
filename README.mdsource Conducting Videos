@@ -1,2 +1,0 @@
-Niryo One
-https://github.com/user-attachments/assets/7752aaf6-d0c6-48ba-b7b6-06445ad6ec60
