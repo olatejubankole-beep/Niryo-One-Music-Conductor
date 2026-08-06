@@ -187,15 +187,26 @@ plt.savefig(path, dpi=200, bbox_inches="tight")
 plot_paths["all_points_workspace"] = path
 plt.show()
 
-# Plot 6: Consecutive movement distance histogram
+# Plot 6: Consecutive movement distance histogram (rescaled x-axis)
+# Replaces the original Plot 6 block only; all other plots unchanged.
 valid_distances = all_df["step_distance_m"].dropna()
+
+X_MAX = 0.05  # display range chosen to cover the distribution mass
+clipped = (valid_distances > X_MAX).sum()
+clipped_pct = clipped / len(valid_distances) * 100
+
 plt.figure(figsize=(10, 6))
-plt.hist(valid_distances, bins=50)
+plt.hist(valid_distances, bins=np.arange(0, X_MAX + 0.002, 0.002))
 plt.axvline(0.01, linestyle="--", label="Minimum movement threshold = 0.01 m")
+plt.xlim(0, X_MAX)
 plt.xlabel("Consecutive movement distance (m)")
 plt.ylabel("Frequency")
 plt.title("Distribution of consecutive trajectory movement distances")
 plt.legend()
+plt.annotate(
+    f"{clipped} steps ({clipped_pct:.1f}%) exceed {X_MAX} m and lie beyond the displayed range",
+    xy=(0.98, 0.80), xycoords="axes fraction", ha="right", fontsize=9
+)
 plt.tight_layout()
 path = os.path.join(out_dir, "figure_6_6_movement_distance_histogram.png")
 plt.savefig(path, dpi=200, bbox_inches="tight")
